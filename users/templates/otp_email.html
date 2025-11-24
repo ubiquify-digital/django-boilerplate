@@ -1,0 +1,119 @@
+{% extends "base_email.html" %}
+
+{% block title %}OTP Verification - accelno{% endblock %}
+
+{% block content %}
+<style>
+    .otp-container {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border: 3px solid #667eea;
+        border-radius: 15px;
+        padding: 40px;
+        text-align: center;
+        margin: 30px 0;
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+    }
+    .otp-code {
+        font-size: 48px !important;
+        font-weight: bold !important;
+        color: #171E31 !important;
+        letter-spacing: 15px !important;
+        margin: 30px 0 !important;
+        font-family: 'Courier New', monospace !important;
+        line-height: 1.2 !important;
+        text-align: center !important;
+        display: block !important;
+        background-color: #f0f0f0 !important;
+        padding: 20px !important;
+        border: 2px solid #667eea !important;
+        border-radius: 10px !important;
+        width: fit-content !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+    .otp-label {
+        font-size: 20px;
+        color: #171E31;
+        margin-bottom: 15px;
+        font-weight: 600;
+    }
+    .instructions {
+        background-color: #e3f2fd;
+        border-left: 4px solid #2196f3;
+        padding: 20px;
+        margin: 30px 0;
+        border-radius: 0 8px 8px 0;
+    }
+    .instructions h3 {
+        margin: 0 0 15px 0;
+        color: #1976d2;
+        font-size: 18px;
+    }
+    .instructions ul {
+        margin: 0;
+        padding-left: 20px;
+    }
+    .instructions li {
+        margin-bottom: 8px;
+        color: #555;
+    }
+    .warning {
+        background-color: #fff3cd;
+        border: 1px solid #ffeaa7;
+        border-radius: 8px;
+        padding: 20px;
+        margin: 30px 0;
+        color: #0B1C41;
+    }
+    .warning h4 {
+        margin: 0 0 10px 0;
+        color: #0B1C41;
+    }
+    .expiry-info {
+        background-color: #fff3e0;
+        border: 1px solid #0B1C41;
+        border-radius: 8px;
+        padding: 15px;
+        margin: 20px 0;
+        text-align: center;
+    }
+    .expiry-info strong {
+        color: #0B1C41;
+    }
+    @media (max-width: 600px) {
+        .otp-code {
+            font-size: 36px !important;
+            letter-spacing: 10px !important;
+            padding: 15px !important;
+        }
+    }
+</style>
+
+<h2>OTP Verification Required</h2>
+<p>To complete your request and ensure the security of your account, please use the One-Time Password (OTP) provided below to verify your identity.</p>
+
+<div class="otp-container">
+    <div class="otp-label">Your Verification Code</div>
+    <div class="otp-code" style="font-size: 48px !important; font-weight: bold !important; color: #171E31 !important; letter-spacing: 15px !important; margin: 30px auto !important; font-family: 'Courier New', monospace !important; line-height: 1.2 !important; text-align: center !important; display: block !important; background-color: #f0f0f0 !important; padding: 20px !important; border: 2px solid #667eea !important; border-radius: 10px !important; width: fit-content !important;">{{ otp }}</div>
+    <p style="margin: 0; color: #666; font-size: 16px; font-weight: 500;">Enter this code to complete verification</p>
+</div>
+
+<div class="expiry-info">
+    <strong>⏰ Important:</strong> This verification code will expire in <strong>10 minutes</strong> for security reasons.
+</div>
+
+<div class="warning">
+    <h4>🔒 Security Notice</h4>
+    <p>Never share this verification code with anyone. accelno will never ask for your verification code via phone, email, or any other method.</p>
+</div>
+
+<p>If you didn't request this OTP, please ignore this message and contact our support team immediately.</p>
+
+<p>Having trouble? Contact our support team at <a href="mailto:{{ support_email }}">{{ support_email }}</a>.</p>
+{% endblock %}
+
+{% block footer_extra %}
+<p style="font-size: 12px; color: #999; margin-top: 20px;">
+    This email was sent to {{ email }}. If you believe this was sent in error, please contact our support team.
+</p>
+{% endblock %}

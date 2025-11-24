@@ -1,0 +1,71 @@
+[project]
+name = "django-boilerplate"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "django>=5.2.8",
+    "django-celery-results>=2.6.0",
+    "django-cors-headers>=4.9.0",
+    "django-environ>=0.12.0",
+    "djangorestframework>=3.16.1",
+    "djangorestframework-simplejwt>=5.5.1",
+    "drf-spectacular>=0.29.0",
+    "flower>=2.0.1",
+    "ipython>=9.7.0",
+    "pillow>=12.0.0",
+    "psycopg2-binary>=2.9.11",
+    "ruff>=0.14.6",
+    "whitenoise>=6.11.0",
+]
+
+
+
+[tool.ruff]
+# Exclude directories and files from linting
+exclude = [
+    ".git",
+    ".ruff_cache",
+    ".venv",
+    "__pycache__",
+    "build",
+    "dist",
+    "config",
+    "*/migrations/*",
+    "*/fixtures/*",
+    "*/static/*",
+    "*/media/*",
+]
+
+# Target Python version
+target-version = "py313"
+
+# Line length
+line-length = 88
+
+# Enable specific rules
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "UP",  # pyupgrade
+]
+
+# Ignore specific rules
+ignore = [
+    "E501",  # line too long (handled by black)
+    "B008",  # do not perform function calls in argument defaults
+    "C901",  # too complex
+]
+
+# Sort imports
+[tool.ruff.isort]
+
+[dependency-groups]
+production = [
+    "gunicorn>=23.0.0",
+]

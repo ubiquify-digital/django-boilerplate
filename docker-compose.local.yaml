@@ -1,0 +1,91 @@
+services:
+  db:
+    image: postgres:latest
+    restart: unless-stopped
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    env_file:
+      - db.env
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "${POSTGRES_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  db_migration:
+    image: django:latest
+    command: python manage.py migrate
+    volumes:
+      - ./rds-combined-ca-bundle.pem:/certs/rds-combined-ca-bundle.pem
+    env_file:
+      - .env
+    depends_on:
+      - db
+
+  backend:
+    image: django:latest
+    container_name: backend
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    depends_on:
+      - db_migration
+      - redis
+    command: gunicorn -w 4 -b 0.0.0.0:8000 config.wsgi:application --timeout 120 --log-level info
+    restart: unless-stopped
+
+  flower:
+    image: django:latest
+    container_name: flower
+    ports:
+      - "5555:5555"
+    env_file:
+      - .env
+    depends_on:
+      - db_migration
+      - redis
+    command: celery -A config.extensions flower --basic-auth=${CELERY_FLOWER_USER}:${CELERY_FLOWER_PASSWORD}
+    restart: unless-stopped
+
+  celery_worker:
+    image: django:latest
+    container_name: celery_worker
+    env_file:
+      - .env
+    depends_on:
+      - db_migration
+      - redis
+    command: celery -A config.extensions worker --loglevel=info -Q emails,portfolio,polygon --concurrency=8
+    healthcheck:
+      test: ["CMD", "celery", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    restart: unless-stopped
+
+  celery_beat:
+    image: django:latest
+    container_name: celery_beat
+    env_file:
+      - .env
+    depends_on:
+      - db_migration
+      - redis
+    command: celery -A config.extensions beat --loglevel=info
+    healthcheck:
+      test: ["CMD", "celery", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    restart: unless-stopped
+
+  redis:
+    image: redis:latest
+    restart: unless-stopped
+    volumes:
+      - redis_data:/data
+
+volumes:
+  postgres_data:
+  redis_data:
