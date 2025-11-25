@@ -40,8 +40,7 @@ django-boilerplate/
 │   ├── serializers.py
 │   ├── views.py
 │   └── urls.py
-├── common/               # Shared utilities
-├── utils/                # Utility functions
+├── common/               # Shared utilities and helper functions
 ├── docker-compose.local.yaml
 ├── docker-compose.production.yaml
 ├── Dockerfile

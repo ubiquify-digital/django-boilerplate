@@ -6,7 +6,7 @@ from django.contrib.auth.models import (
     PermissionsMixin,
 )
 from django.db import models
-from utils import dynamic_upload_path
+from common.utils import dynamic_upload_path
 
 from common.models import NormalizedEmailField
 
