@@ -18,7 +18,8 @@ WORKDIR /code
 COPY pyproject.toml uv.lock ./
 
 # Install deps into project .venv (isolated, no cache needed later)
-RUN uv sync --frozen --no-dev
+# Include production group for gunicorn
+RUN uv sync --frozen --no-dev --group production
 
 # --------------------
 # Stage 2: Runtime
@@ -34,7 +35,7 @@ COPY --from=builder /code/.venv /code/.venv
 
 # Copy source
 COPY . .
-COPY app.env .env
+COPY .env .env
 
 # Collect static files at build
 RUN uv run --frozen manage.py collectstatic --noinput
