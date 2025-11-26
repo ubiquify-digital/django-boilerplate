@@ -1,0 +1,54 @@
+services:
+  postgres:
+    image: postgres:latest
+    restart: unless-stopped
+    volumes:
+      - postgres_data:/var/lib/postgresql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    env_file:
+      - db.env
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  db_migration:
+    build: .
+    command: uv run manage.py migrate --noinput
+    restart: "no"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  backend:
+    build: .
+    container_name: backend
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    depends_on:
+      - db_migration
+      - redis
+    restart: unless-stopped
+    command: uv run --group production gunicorn -w 4 -b 0.0.0.0:8000 config.wsgi:application --timeout 120 --log-level info
+
+  inngest:
+    image: inngest/inngest:v0.27.0
+    command: "inngest dev -u http://backend:8000/api/inngest"
+    env_file:
+      - .env
+    ports:
+      - "8288:8288"
+    restart: unless-stopped
+
+  redis:
+    image: redis:latest
+    restart: unless-stopped
+    volumes:
+      - redis_data:/data
+
+volumes:
+  postgres_data:
+  redis_data:
