@@ -27,6 +27,7 @@ RESTFRAMEWORK_APPS = [
 
 INTERNAL_APPS = [
     "users",
+    "clerk",
 ]
 
 CELERY_APPS = [
@@ -129,8 +130,9 @@ REST_FRAMEWORK = {
         "rest_framework.permissions.IsAuthenticated",
     ],
     "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
-        "users.authentication.CookieBasedAuthentication",
+        "clerk.authentication.ClerkAuthentication",
+        "rest_framework.authentication.BasicAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
     ),
     "DEFAULT_THROTTLE_CLASSES": [
         "rest_framework.throttling.AnonRateThrottle",
@@ -206,6 +208,11 @@ STORAGES = {
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 BACKEND_URL = env("BACKEND_URL", default="http://localhost:8000")
+
+# Clerk Configuration
+CLERK_SECRET_KEY = env("CLERK_SECRET_KEY", default="")
+CLERK_FRONTEND_API = env("CLERK_FRONTEND_API", default="")
+CLERK_WEBHOOK_SECRET = env("CLERK_WEBHOOK_SECRET", default="")
 
 AWS_STORAGE_BUCKET_NAME = env("AWS_STORAGE_BUCKET_NAME")
 AWS_S3_REGION_NAME = env("AWS_S3_REGION_NAME")

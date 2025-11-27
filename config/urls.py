@@ -40,6 +40,8 @@ urlpatterns = [
     ),
     # Auth
     path("api/v1/auth/", include("users.urls")),
+    # Clerk
+    path("api/v1/clerk/", include("clerk.urls")),
 ]
 
 

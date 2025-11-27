@@ -64,6 +64,9 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     otp_expiry = models.DateTimeField(null=True, blank=True)
     otp_sent_at = models.DateTimeField(null=True, blank=True)
 
+    # Clerk integration
+    clerk_user_id = models.CharField(max_length=255, null=True, blank=True, unique=True, db_index=True)
+
     # Auto generated Username
     def save(self, *args, **kwargs):
         if not self.username:
@@ -109,4 +112,5 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
             models.Index(
                 fields=["is_active", "created_at"], name="user_active_created_at_idx"
             ),
+            models.Index(fields=["clerk_user_id"], name="user_clerk_user_id_idx"),
         ]

@@ -19,6 +19,44 @@ EMAIL_HOST_PASSWORD = env("DJANGO_EMAIL_PASSWORD", default="")
 
 ENV = "local"
 
+# Logging - output to console for Docker
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "{levelname} {asctime} {module} {message}",
+            "style": "{",
+        },
+        "simple": {
+            "format": "{levelname} {message}",
+            "style": "{",
+        },
+    },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "verbose",
+        },
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": "INFO",
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console"],
+            "level": "INFO",
+            "propagate": False,
+        },
+        "django.request": {
+            "handlers": ["console"],
+            "level": "WARNING",
+            "propagate": False,
+        },
+    },
+}
+
 AWS_S3_ENDPOINT_URL = env("AWS_S3_ENDPOINT_URL", default="http://localhost:4566")  # type: ignore
 AWS_S3_USE_SSL = env("AWS_S3_USE_SSL", default=False)  # type: ignore
 AWS_S3_VERIFY = env("AWS_S3_VERIFY", default=False)  # type: ignore
