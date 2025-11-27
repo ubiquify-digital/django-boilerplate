@@ -27,6 +27,7 @@ RESTFRAMEWORK_APPS = [
 
 INTERNAL_APPS = [
     "users",
+    "django_inngest",
 ]
 
 CELERY_APPS = [

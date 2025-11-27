@@ -24,6 +24,8 @@ from drf_spectacular.views import (
     SpectacularSwaggerView,
 )
 
+from django_inngest.views import inngest_view_path
+
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -40,6 +42,8 @@ urlpatterns = [
     ),
     # Auth
     path("api/v1/auth/", include("users.urls")),
+    # Inngest
+    inngest_view_path,
 ]
 
 
