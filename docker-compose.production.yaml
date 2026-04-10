@@ -113,7 +113,7 @@ services:
     depends_on:
       - db_migration
       - redis
-    command: celery -A config.extensions worker --loglevel=info -Q n8n --concurrency=10
+    command: celery -A config.extensions worker --loglevel=info --concurrency=10
     healthcheck:
       test: ["CMD", "celery", "ping"]
       interval: 30s
@@ -152,7 +152,6 @@ services:
       - rabbitmq_data:/var/lib/rabbitmq
 
 volumes:
-  n8n_data:
   traefik_data:
   rabbitmq_data:
   redis_data:
