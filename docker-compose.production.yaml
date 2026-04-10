@@ -145,7 +145,14 @@ services:
     volumes:
       - redis_data:/data
 
+  rabbitmq:
+    image: rabbitmq:latest
+    restart: unless-stopped
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+
 volumes:
   n8n_data:
   traefik_data:
+  rabbitmq_data:
   redis_data:
