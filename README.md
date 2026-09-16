@@ -4,7 +4,7 @@ A modern Django REST API boilerplate with Docker support, Celery, Redis, Postgre
 
 ## Features
 
-- **Django 5.2+** with Python 3.13
+- **Django 6.1+** with Python 3.14
 - **Django REST Framework** for building APIs
 - **PostgreSQL** database with optimized indexes
 - **Redis** for caching and Celery broker

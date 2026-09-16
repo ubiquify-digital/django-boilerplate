@@ -1,7 +1,7 @@
 # --------------------
 # Stage 1: Builder
 # --------------------
-FROM python:3.13-slim AS builder
+FROM python:3.14-slim AS builder
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
@@ -24,7 +24,7 @@ RUN uv sync --frozen --no-dev --group production
 # --------------------
 # Stage 2: Runtime
 # --------------------
-FROM python:3.13-slim AS runtime
+FROM python:3.14-slim AS runtime
 
 WORKDIR /code
 
